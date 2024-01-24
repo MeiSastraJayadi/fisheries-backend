@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\GetMachineByIdController;
+use App\Http\Controllers\API\HelloWorld;
 use App\Http\Controllers\API\ListMachineController;
 use App\Http\Controllers\API\Login;
 use App\Http\Controllers\API\Logout;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get("/", HelloWorld::class);
 
 Route::group(["prefix" => "auth"], function() {
     Route::post("/login", Login::class);
