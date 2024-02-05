@@ -40,6 +40,7 @@ Route::group(["prefix" => "machine"], function() {
         Route::get("/machine-logs/{machine:id}", MachineLogController::class);
         Route::get("/machine-light/{machine:id}", MachineGetLightController::class);
     });
+    Route::get("/detail/{machine:id}", GetMachineByIdController::class);
     Route::post("/machine-update-light/{machine:id}", MachineLightChangeController::class);
     Route::post("/machine-on/{machine:id}", MachineOnController::class);
     Route::post("/machine-off/{machine:id}", MachineOffController::class);
