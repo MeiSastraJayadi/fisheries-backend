@@ -33,11 +33,13 @@ Route::group(["prefix" => "auth"], function() {
 
 Route::middleware('auth:sanctum') -> get('/auth/logout', Logout::class);
 
-Route::group(["prefix" => "machine", "middleware" => ["auth:sanctum"]], function() {
-    Route::get("/list-machine", ListMachineController::class);
-    Route::get("/machine-detail/{machine:id}", GetMachineByIdController::class);
-    Route::get("/machine-logs/{machine:id}", MachineLogController::class);
-    Route::get("/machine-light/{machine:id}", MachineGetLightController::class);
+Route::group(["prefix" => "machine"], function() {
+    Route::middleware(['auth:sanctum']) -> group(function() {
+        Route::get("/list-machine", ListMachineController::class);
+        Route::get("/machine-detail/{machine:id}", GetMachineByIdController::class);
+        Route::get("/machine-logs/{machine:id}", MachineLogController::class);
+        Route::get("/machine-light/{machine:id}", MachineGetLightController::class);
+    });
     Route::post("/machine-update-light/{machine:id}", MachineLightChangeController::class);
     Route::post("/machine-on/{machine:id}", MachineOnController::class);
     Route::post("/machine-off/{machine:id}", MachineOffController::class);
