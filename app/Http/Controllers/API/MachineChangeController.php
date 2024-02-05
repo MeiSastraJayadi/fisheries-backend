@@ -21,6 +21,7 @@ class MachineChangeController extends Controller
     {
         try {
             $validator = Validator::make($request -> all(), [
+                "light" => "required",
                 "temp" => "required",
                 "humid" => "required",
                 "weight" => "required"
@@ -36,7 +37,8 @@ class MachineChangeController extends Controller
             $payload = [
                 "temp" => $request -> temp,
                 "humid" => $request -> humid,
-                "weight" => $request -> weight
+                "weight" => $request -> weight,
+                "light" => $request -> light
             ];
 
             Machine::where('id', $machine -> id) -> update($payload);
@@ -45,10 +47,11 @@ class MachineChangeController extends Controller
                 "temp" => $request -> temp,
                 "humid" => $request -> humid,
                 "weight" => $request -> weight,
+                "light" => $request -> light,
                 "machine_id" => $machine -> id
             ];
 
-            MachineLog::created($logs);
+            MachineLog::create($logs);
 
             $mach = Machine::where('id', $machine -> id) -> first();
             return response([

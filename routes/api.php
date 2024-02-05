@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MachineDryController;
 use App\Http\Controllers\API\GetMachineByIdController;
 use App\Http\Controllers\API\HelloWorld;
 use App\Http\Controllers\API\ListMachineController;
@@ -39,6 +40,7 @@ Route::group(["prefix" => "machine"], function() {
         Route::get("/machine-detail/{machine:id}", GetMachineByIdController::class);
         Route::get("/machine-logs/{machine:id}", MachineLogController::class);
         Route::get("/machine-light/{machine:id}", MachineGetLightController::class);
+        Route::post("/machine-dry/{machine:id}", MachineDryController::class);
     });
     Route::get("/detail/{machine:id}", GetMachineByIdController::class);
     Route::post("/machine-update-light/{machine:id}", MachineLightChangeController::class);
