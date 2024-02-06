@@ -41,6 +41,14 @@ class MachineChangeController extends Controller
                 "light" => $request -> light
             ];
 
+            if ($request -> lat) {
+                $payload["lat"] = $request -> lat;
+            }
+
+            if ($request -> lng) {
+                $payload["lng"] = $request -> lng;
+            }
+
             Machine::where('id', $machine -> id) -> update($payload);
 
             $logs = [
