@@ -17,7 +17,7 @@ class ShowMachineLogsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $logs = MachineLog::all();
+        $logs = MachineLog::orderBy('created_at', 'DESC') -> limit(500);
         return DataTables::of($logs)
             ->addIndexColumn()
             ->make(true);
