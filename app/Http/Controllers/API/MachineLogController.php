@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Machine;
+use App\Models\MachineLog;
 use Error;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,8 @@ class MachineLogController extends Controller
     public function __invoke(Request $request, Machine $machine)
     {
         try {
-            $logs = Machine::where('id', $machine -> id) -> first() -> logs;
+            // $logs = Machine::where('id', $machine -> id) -> first() -> logs;
+            $logs=MachineLog::where('machine_id', $machine -> id) ->limit(20) -> get();
             return response([
                 "status" => true,
                 "message" => "List log mesin",
