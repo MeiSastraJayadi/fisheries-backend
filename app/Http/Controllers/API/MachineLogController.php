@@ -19,8 +19,7 @@ class MachineLogController extends Controller
     public function __invoke(Request $request, Machine $machine)
     {
         try {
-            // $logs = Machine::where('id', $machine -> id) -> first() -> logs;
-            $logs=MachineLog::where('machine_id', $machine -> id)->limit(20) -> get();
+            $logs=MachineLog::where('machine_id', $machine -> id) -> orderBy('created_at', 'DESC') ->limit(20) -> get();
             return response([
                 "status" => true,
                 "message" => "List log mesin",
