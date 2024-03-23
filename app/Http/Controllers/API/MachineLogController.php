@@ -20,7 +20,7 @@ class MachineLogController extends Controller
     {
         try {
             // $logs = Machine::where('id', $machine -> id) -> first() -> logs;
-            $logs=MachineLog::where('machine_id', $machine -> id) ->limit(20) -> get();
+            $logs=MachineLog::where('machine_id', $machine -> id)->orderBy('created_at','desc') ->limit(20) -> get();
             return response([
                 "status" => true,
                 "message" => "List log mesin",
