@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DryHistory;
 use App\Models\Machine;
 use Error;
 use Illuminate\Http\Request;
@@ -29,6 +30,14 @@ class MachineDryController extends Controller
                     "message" => $validate -> errors()
                 ], 400);
             }
+
+            DryHistory::create(
+                [
+                    "machine_id" => $machine -> id,
+                    "assign_weight" => $request -> weight,
+                    "finish" => false 
+                ]
+            );
 
             $payload = [
                 "weight" => $request -> weight,

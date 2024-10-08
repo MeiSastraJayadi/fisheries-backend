@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\DryHistory;
 use App\Models\Machine;
 use App\Models\MachineLog;
 use Error;
@@ -27,6 +28,20 @@ class MachineChangeController extends Controller
                 "weight" => "required"
             ]);
 
+            $dry = DryHistory::where('machine_id', $machine->id)
+                    ->where('finish', false)
+                    ->orderBy('created_at', 'DESC')
+                    ->first();
+
+            if ($dry == null) {
+                return response([
+                    "status" => true,
+                    "message" => "Tidak ada proses pengeringan",
+                    "data" => $machine
+                ], 200);
+            }
+
+            $humidity = ($request -> weight / $dry -> assign_weight) * 100;
             if ($validator -> fails()) {
                 return response([
                     "status" => false,
@@ -36,7 +51,7 @@ class MachineChangeController extends Controller
 
             $payload = [
                 "temp" => $request -> temp,
-                "humid" => $request -> humid,
+                "humid" => $humidity,
                 "weight" => $request -> weight,
                 "light" => $request -> light
             ];
@@ -53,13 +68,23 @@ class MachineChangeController extends Controller
 
             $logs = [
                 "temp" => $request -> temp,
-                "humid" => $request -> humid,
+                "humid" => $humidity,
                 "weight" => $request -> weight,
                 "light" => $request -> light,
                 "machine_id" => $machine -> id
             ];
 
-            MachineLog::create($logs);
+
+            if ($dry < 30) {
+                DryHistory::where('id', $dry -> id) -> update([
+                    "finish" => true
+                ]);
+                Machine::where('id', $machine->id) -> update([
+                    "active" => false
+                ]);
+            } else {
+                MachineLog::create($logs);
+            }
 
             $mach = Machine::where('id', $machine -> id) -> first();
             return response([
