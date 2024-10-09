@@ -25,6 +25,7 @@ class CheckProgressController extends Controller
         
         if ($dry == null) {
             return response([
+                "weight" => 0,
                 "percent" => 100
             ], 200);
         }
@@ -33,8 +34,15 @@ class CheckProgressController extends Controller
         $log = MachineLog::where('machine_id', $machine->id)
             ->orderBy('created_at', 'DESC')
             ->first();
+        if ($log == null) {
+            return response([
+                "weight" => 0,
+                "percent" => 100
+            ], 200);
+        }
         $percent = ($log -> weight / $target) * (1/100);
         return response([
+            "weight" => $dry -> assign_weight,
             "percent" => $percent
         ], 200);
     }
