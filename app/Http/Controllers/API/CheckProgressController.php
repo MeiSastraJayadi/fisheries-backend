@@ -22,6 +22,13 @@ class CheckProgressController extends Controller
             ->where('finish', false)
             ->orderBy('created_at', 'DESC')
             ->first();
+        
+        if ($dry == null) {
+            return response([
+                "percent" => 100
+            ], 200);
+        }
+
         $target = $dry -> assign_weight * (30/100);
         $log = MachineLog::where('machine_id', $machine->id)
             ->orderBy('created_at', 'DESC')
