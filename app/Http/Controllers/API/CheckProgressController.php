@@ -30,7 +30,7 @@ class CheckProgressController extends Controller
             ], 200);
         }
 
-        $target = $dry -> assign_weight * (30/100);
+        // $target = $dry -> assign_weight * (30/100);
         $log = MachineLog::where('machine_id', $machine->id)
             ->orderBy('created_at', 'DESC')
             ->first();
@@ -40,7 +40,7 @@ class CheckProgressController extends Controller
                 "percent" => 100
             ], 200);
         }
-        $percent = ($log -> weight / $target) * (1/100);
+        $percent = ($log -> weight / $dry -> assign_weight) * (1/100);
         return response([
             "weight" => $dry -> assign_weight,
             "percent" => $percent
