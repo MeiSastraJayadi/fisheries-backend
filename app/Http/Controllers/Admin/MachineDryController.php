@@ -20,6 +20,19 @@ class MachineDryController extends Controller
     public function __invoke(Request $request, Machine $machine)
     {
         try {
+
+            $dry = DryHistory::where('machine_id', $machine -> id)
+                ->where('finish', false)
+                ->first();
+            
+            if($dry != null) {
+                return response([
+                    "status" => false,
+                    "message" => "Harap menunggu proses pengeringan selesai terlebih dahulu",
+                    "data" => Machine::where('id', $machine -> id) -> first()
+                ], 200);
+            }
+
             $validate = Validator::make($request -> all(), [
                 "weight" => "required"
             ]);
@@ -46,7 +59,7 @@ class MachineDryController extends Controller
 
             Machine::where('id', $machine -> id) -> update($payload);
             return response([
-                "status" => false,
+                "status" => true,
                 "message" => "Berhasil mengirimkan data untuk proses pengeringan",
                 "data" => Machine::where('id', $machine -> id) -> first()
             ], 200);
