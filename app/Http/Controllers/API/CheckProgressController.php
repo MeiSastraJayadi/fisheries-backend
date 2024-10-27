@@ -34,9 +34,16 @@ class CheckProgressController extends Controller
         $current = $dry -> assign_weight; 
         $range = $current - $target; 
         $ratio = 100 / $range; 
-        $log = MachineLog::where('machine_id', $machine->id)
-            ->orderBy('created_at', 'DESC')
-            ->first();
+        // $log = MachineLog::where('machine_id', $machine->id)
+        //     ->orderBy('created_at', 'DESC')
+        //     ->first();
+
+        $log = MachineLog::where([
+            ['machine_id', $machine->id], 
+            ['created_at', '>=', $dry -> created_at]
+        ])
+        ->first();
+
         if ($log == null) {
             return response([
                 "weight" => 0,
