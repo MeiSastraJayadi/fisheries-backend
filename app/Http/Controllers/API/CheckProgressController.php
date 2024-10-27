@@ -42,6 +42,7 @@ class CheckProgressController extends Controller
             ['machine_id', $machine->id], 
             ['created_at', '>=', $dry -> created_at]
         ])
+        ->orderBy('created_at', 'DESC')
         ->first();
 
         if ($log == null) {
