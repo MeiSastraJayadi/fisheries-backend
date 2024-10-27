@@ -43,6 +43,7 @@ class CheckProgressController extends Controller
         $percent = ($log -> weight / $dry -> assign_weight) * (1/100);
         return response([
             "weight" => $dry -> assign_weight,
+            "current_weight" => $log -> weight,
             "percent" => $percent
         ], 200);
     }
