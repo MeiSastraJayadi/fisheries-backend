@@ -72,10 +72,12 @@ class MachineChangeController extends Controller
                 "weight" => $request -> weight,
                 "light" => $request -> light,
                 "machine_id" => $machine -> id
-            ];
+            ]; 
+
+            $min = $dry -> assign_weight * (30/100);
 
 
-            if ($dry < 30) {
+            if ($request -> weight < $min) {
                 DryHistory::where('id', $dry -> id) -> update([
                     "finish" => true
                 ]);
